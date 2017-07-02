@@ -1,0 +1,67 @@
+body {
+    padding: 10px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#keepName {
+    border-bottom: 2px;
+    border-bottom-color: rebeccapurple;
+    border-bottom-style: solid;
+}
+
+#submitbutton {
+    background-color: #4CAF50;
+    border-radius: 4px;
+    border: 1px solid gray;
+    text-align: center;
+    color: white;
+}
+
+select {
+    opacity: 1;
+    font: 14px "Microsoft YaHei";
+    color: #343;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+form {
+    text-align: center
+}
+
+input,
+th {
+    width: 100px;
+}
+
+input[type="submit"] {
+    width: 80px;
+    float: left;
+    margin-left: 360px;
+    height: 25px;
+}
+
+.main {
+    height: auto;
+    overflow: hidden;
+    margin: 0px auto;
+}
+
+.main td {
+    text-align: center;
+    height: 25px;
+    width: auto;
+    min-width: 50px;
+    line-height: 25px;
+    font-size: 14px;
+    color: #555;
+}
+
+.display-none {
+    display: none
+}

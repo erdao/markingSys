@@ -1,0 +1,140 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>评分统计结果</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/table.css">
+    <script src="http://suiyidian.cn/texiao/tab/jquery-1.5.2.min.js" type="text/javascript"></script>
+    <script src="../javascripts/table.js"></script>
+    <style>
+        body {
+            padding: 10px;
+            font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        }
+        
+        .main {
+            height: auto;
+            overflow: hidden;
+            margin: 0px auto;
+        }
+        
+        .main td {
+            text-align: center;
+            height: 25px;
+            width: auto;
+            min-width: 50px;
+            line-height: 25px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        input,
+        th {
+            width: 70px;
+        }
+        
+        .none {
+            display: none
+        }
+        
+        h1 {
+            text-align: center
+        }
+    </style>
+
+    <script>
+        $(function() {
+            var pk = 1;
+            $(".title td").click(function() {
+                // 把要排序的内容添加到数组里
+                var tIndex = parseFloat($(this).index());
+                if (tIndex == 0) return;
+                var valueArray = new Array();
+                var p = 0;
+                for (var i = 1; i < $("table tr").length; i++) {
+                    if (tIndex != 0) {
+                        valueArray[p] = parseFloat($("table tr:eq(" + i + ") td").eq(tIndex).html());
+                    } else {
+                        valueArray[p] = $("table tr:eq(" + i + ") td").eq(tIndex).html();
+                    }
+                    p++;
+                }
+                //数据排序
+                if (pk == 1) {
+                    valueArray.sort(function(a, b) {
+                        return a <= b ? -1 : 1
+                    })
+                    pk = 2
+                } else {
+                    valueArray.sort(function(a, b) {
+                        return a >= b ? -1 : 1
+                    })
+                    pk = 1
+                }
+                //匹配内容 加入到一个隐藏的排序div里+-
+                for (var i = 0; i < valueArray.length; i++) {
+                    for (var d = 1; d < $("table tr").length; d++) {
+                        var valueText = tIndex != 0 ? parseFloat($("table tr:eq(" + d + ") td").eq(tIndex).html()) : $("table tr:eq(" + d + ") td").eq(tIndex).html();
+                        if (valueArray[i] == valueText) {
+                            $("table tr").eq(d).clone().appendTo(".none")
+                        }
+                    }
+                    for (var j = i + 1; j < valueArray.length; j++) {
+                        if (valueArray[i] == valueArray[j]) {
+                            i++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                //重新整理html 排序，添加到视图里
+                var titleClone = $("table tr").eq(0).clone(true);
+                $("table").html("").append(titleClone);
+                $("table").append($(".none").html())
+                $(".none").html("");
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    <div style="float:left;width:50;height:200">
+        <dl>
+            <div class="swichtheme">theme</div>
+        </dl>
+        <dl class="switchthemecontainer">
+
+        </dl>
+    </div>
+    <h1>评分统计结果</h1>
+    <table class="main">
+        <tr class="title">
+            <th class="rowheader">
+                互评
+            </th>
+
+            <%for(i=1;i<title.length;i++){%>
+                <th class="rowheader" name=<%=i-1 %>>
+                    <%= title[i] %>
+                </th>
+                <%}%>
+        </tr>
+
+        <% users.forEach(function(user,i){ %>
+            <tr class="rowchild">
+                <th class="columnheader">
+                    <span><%= user %></span>
+                </th>
+                <%for(j=1;j<scores[i].length;j++){%>
+                    <td name=<%=j-1 %>>
+                        <input readonly="true " value=<%=scores[i][j] %>>
+                    </td>
+                    <%}%>
+            </tr>
+            <% }) %>
+    </table>
+    <div class="none "></div>
+</body>
+
+</html>

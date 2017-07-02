@@ -1,0 +1,61 @@
+table {
+    border-collapse: collapse;
+    font-family: "Lucida Grande", "Microsoft yahei light", "Times New Roman", Serif;
+    font-size: 14px;
+}
+
+table,
+th,
+td {
+    border: 1px solid gray;
+}
+
+span {
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+input {
+    text-align: center;
+    border: none;
+    outline: medium;
+    background-color: transparent;
+}
+
+.rowheader,
+.columnheader {
+    color: white;
+    cursor: pointer;
+}
+
+th span:after {
+    content: ">>";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.rowChild:hover th span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.rowChild:hover th span {
+    padding-right: 25px;
+}
+
+.selectiondiv {
+    width: 50;
+    height: 30;
+}
+
+.swichtheme {
+    border: 1px solid forestgreen;
+    border-radius: 4px;
+    width: 48px;
+    text-align: center;
+    cursor: pointer;
+}
