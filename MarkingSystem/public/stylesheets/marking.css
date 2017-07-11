@@ -41,8 +41,6 @@ th {
 
 input[type="submit"] {
     width: 80px;
-    float: left;
-    margin-left: 360px;
     height: 25px;
 }
 

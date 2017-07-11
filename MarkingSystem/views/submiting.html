@@ -44,15 +44,19 @@
     </style>
 
     <script>
+        function changeTheme() {
+            $("tr:even").css({
+                "background-color": "#A7C942"
+            });
+
+            $("tr:odd").css({
+                "background-color": "#EAF2D3"
+            });
+        }
+
         $(function() {
             $(document).ready(function() {
-                $("tr:even").css({
-                    "background-color": "#A7C942"
-                });
-
-                $("tr:odd").css({
-                    "background-color": "#EAF2D3"
-                });
+                changeTheme();
             });
 
             var pk = 1;
@@ -103,6 +107,9 @@
                 $("table").html("").append(titleClone);
                 $("table").append($(".none").html())
                 $(".none").html("");
+
+
+                changeTheme();
             })
 
         })

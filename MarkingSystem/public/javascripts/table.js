@@ -7,8 +7,9 @@ var hoverForeground;
 var lastClickRowHeader = null;
 var lastClickColumnHeader = null;
 
-var themeswitchtime = 300;
+var isSort = false;
 
+var themeswitchtime = 300;
 
 var themeSources = new Array();
 //分别是 header背景色，hover背景色，click背景色，正常前景色，hover前景色，header前景色
@@ -35,7 +36,7 @@ $(function() {
     $(document).ready(function() {
         switchTheme("theme1");
 
-        $(".switchthemecontainer").slideUp(themeswitchtime);
+        $(".switchthemecontainer").slideUp();
 
         for (item in themeSources) {
             var newdt = $("<div></div>").css("background-color", themeSources[item][0]);
@@ -49,10 +50,10 @@ $(function() {
         });
     });
 
-
     $(".swichtheme").click(function() {
         $(".switchthemecontainer").slideToggle(themeswitchtime);
     });
+
 
 
 
@@ -60,8 +61,8 @@ $(function() {
         var currentRowHeader = $(this)[0];
         if ($(currentRowHeader).attr("topclick") == "1") {
             $(currentRowHeader).attr("topclick", "");
-            var mytd = $("td[name=" + $(currentRowHeader).attr("name") + "]");
-            $.each(mytd, function(index, element) {
+            var tds = $("td[name=" + $(currentRowHeader).attr("name") + "]");
+            $.each(tds, function(index, element) {
                 if ($(element).attr("leftclick") != 1) {
                     $(element).children("input").css("color", normalForeground);
                 }
@@ -71,16 +72,16 @@ $(function() {
             lastClickRowHeader = null;
         } else {
             $(currentRowHeader).attr("topclick", "1");
-            var mytd = $("td[name=" + $(currentRowHeader).attr("name") + "]");
-            $.each(mytd, function(index, element) {
+            var tds = $("td[name=" + $(currentRowHeader).attr("name") + "]");
+            $.each(tds, function(index, element) {
                 $(element).css({ "background-color": clickColor });
                 $(element).attr("topclick", "1");
                 $(element).children("input").css("color", hoverForeground);
             })
             if (lastClickRowHeader != null) {
                 $(lastClickRowHeader).attr("topclick", "");
-                var mytd = $("td[name=" + $(lastClickRowHeader).attr("name") + "]");
-                $.each(mytd, function(index, element) {
+                var tds = $("td[name=" + $(lastClickRowHeader).attr("name") + "]");
+                $.each(tds, function(index, element) {
                     if ($(element).attr("leftclick") != 1) {
                         $(element).children("input").css("color", normalForeground);
                     }
@@ -118,8 +119,6 @@ $(function() {
         }
     });
 
-
-
     $(".rowheader").hover(function() {
             if ($(this).attr("topclick") != "1") {
                 $.each($("td[name=" + $(this).attr("name") + "][leftclick!=" + "1" + "]"), function(index, element) {
@@ -151,5 +150,34 @@ $(function() {
             }
         })
 
+    $(".rowheader[name!='-1']").dblclick(function() {
+        var currentName = $($(this)[0]).attr("name");
+        var rowchildCount = $(".rowchild").length;
 
+        for (i = rowchildCount - 1; i > 0; i--) {
+            for (j = 0; j < i; j++) {
+                var currentTds = $($(".rowchild")[j]).children("td[name=" + currentName + "]");
+                var currentValueString = $(currentTds[0]).children("input")[0].value;
+                var currentValue = parseFloat(currentValueString);
+
+                var nextTds = $($(".rowchild")[j + 1]).children("td[name=" + currentName + "]");
+                var nextValueString = $(nextTds[0]).children("input")[0].value;
+                var nextValue = parseFloat(nextValueString);
+                if (isNaN(currentValue)) {
+                    currentValue = 100000;
+                }
+                if (isNaN(currentValue)) {
+                    nextValue = 100000;
+                }
+                if (isSort ? currentValue > nextValue : currentValue < nextValue) {
+                    switchTr($(".rowchild")[j], $(".rowchild")[j + 1]);
+                }
+            }
+        }
+        isSort = !isSort;
+    });
+
+    function switchTr(tr0, tr1) {
+        $(tr0).insertAfter(tr1);
+    };
 })
