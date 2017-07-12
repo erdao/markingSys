@@ -66,7 +66,7 @@
             </th>
 
             <%for(i=1;i<title.length;i++){%>
-                <th class="rowheader" name=<%=i-1 %>>
+                <th class="rowheader" name=<%=i-1 %> onselectstart="return false">
                     <%= title[i] %>
                 </th>
                 <%}%>
@@ -75,7 +75,7 @@
         <% users.forEach(function(user,i){ %>
             <tr class="rowchild">
                 <th class="columnheader">
-                    <span><%= user %></span>
+                    <span onselectstart="return false"><%= user %></span>
                 </th>
                 <%for(j=1;j<scores[i].length;j++){%>
                     <td name=<%=j-1 %>>
