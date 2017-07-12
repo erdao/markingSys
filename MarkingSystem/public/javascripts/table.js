@@ -56,42 +56,46 @@ $(function() {
 
 
 
+    var timer = null;
 
     $(".rowheader[name!='-1']").click(function() {
+        clearTimeout(timer);
         var currentRowHeader = $(this)[0];
-        if ($(currentRowHeader).attr("topclick") == "1") {
-            $(currentRowHeader).attr("topclick", "");
-            var tds = $("td[name=" + $(currentRowHeader).attr("name") + "]");
-            $.each(tds, function(index, element) {
-                if ($(element).attr("leftclick") != 1) {
-                    $(element).children("input").css("color", normalForeground);
-                }
-                $(element).css({ "background-color": "" });
-                $(element).attr("topclick", "");
-            })
-            lastClickRowHeader = null;
-        } else {
-            $(currentRowHeader).attr("topclick", "1");
-            var tds = $("td[name=" + $(currentRowHeader).attr("name") + "]");
-            $.each(tds, function(index, element) {
-                $(element).css({ "background-color": clickColor });
-                $(element).attr("topclick", "1");
-                $(element).children("input").css("color", hoverForeground);
-            })
-            if (lastClickRowHeader != null) {
-                $(lastClickRowHeader).attr("topclick", "");
-                var tds = $("td[name=" + $(lastClickRowHeader).attr("name") + "]");
+        timer = setTimeout(function() {
+            if ($(currentRowHeader).attr("topclick") == "1") {
+                $(currentRowHeader).attr("topclick", "");
+                var tds = $("td[name=" + $(currentRowHeader).attr("name") + "]");
                 $.each(tds, function(index, element) {
                     if ($(element).attr("leftclick") != 1) {
                         $(element).children("input").css("color", normalForeground);
                     }
                     $(element).css({ "background-color": "" });
                     $(element).attr("topclick", "");
-
                 })
+                lastClickRowHeader = null;
+            } else {
+                $(currentRowHeader).attr("topclick", "1");
+                var tds = $("td[name=" + $(currentRowHeader).attr("name") + "]");
+                $.each(tds, function(index, element) {
+                    $(element).css({ "background-color": clickColor });
+                    $(element).attr("topclick", "1");
+                    $(element).children("input").css("color", hoverForeground);
+                })
+                if (lastClickRowHeader != null) {
+                    $(lastClickRowHeader).attr("topclick", "");
+                    var tds = $("td[name=" + $(lastClickRowHeader).attr("name") + "]");
+                    $.each(tds, function(index, element) {
+                        if ($(element).attr("leftclick") != 1) {
+                            $(element).children("input").css("color", normalForeground);
+                        }
+                        $(element).css({ "background-color": "" });
+                        $(element).attr("topclick", "");
+
+                    })
+                }
+                lastClickRowHeader = currentRowHeader;
             }
-            lastClickRowHeader = currentRowHeader;
-        }
+        }, 250);
     });
 
 
@@ -151,6 +155,7 @@ $(function() {
         })
 
     $(".rowheader[name!='-1']").dblclick(function() {
+        clearTimeout(timer);
         var currentName = $($(this)[0]).attr("name");
         var rowchildCount = $(".rowchild").length;
 
